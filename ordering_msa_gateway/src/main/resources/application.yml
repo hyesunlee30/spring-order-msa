@@ -1,0 +1,47 @@
+server:
+  port: 5000
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      routes:
+        - id: item-service
+          # 유레카에 등록된 서비스명
+          uri: lb://item-service
+          # url 요청이 들어올 경우
+          predicates:
+            - Path=/item-service/**
+          # 첫번째 접두어 제거
+          filters:
+            - StripPrefix=1
+        - id: member-service
+          # 유레카에 등록된 서비스명
+          uri: lb://member-service
+          # url 요청이 들어올 경우
+          predicates:
+            - Path=/member-service/**
+          # 첫번째 접두어 제거
+          filters:
+            - StripPrefix=1
+        - id: order-service
+          # 유레카에 등록된 서비스명
+          uri: lb://order-service
+          # url 요청이 들어올 경우
+          predicates:
+            - Path=/order-service/**
+          # 첫번째 접두어 제거
+          filters:
+            - StripPrefix=1
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8762/eureka/
+
+
+jwt:
+  expiration: 30
+  secretKey: mysecret
+
+
